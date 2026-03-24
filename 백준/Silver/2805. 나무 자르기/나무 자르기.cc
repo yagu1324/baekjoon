@@ -18,98 +18,98 @@ using namespace std;
 // 문제 발생 ) 11/10 -> 이렇게 되면 0이 나옴 -> 해결) 강제로 -1, +1 을 실행
 // 높은곳에서는 -1. 낮은곳에서는 +1/ 대신 while 문을 true 에서 shortest<=longest로 변경
 // (이부분은 ai에게 도움받음)
-// 
 //
-//int main() {
-//	//시간초과용
-//	ios_base::sync_with_stdio(false);
-//	cin.tie(NULL);
-//
-//	int tree_case; // 입력받을 나무의 갯수
-//	int need;// 필요한 나무 길이
-//	int a,longest=0,shortest=0,cut=0;// a = 대충 입력받을 값, longest = 가장 긴 나무길이, sum=자를 나무길이의 총 합
-//	long long sum = 0,ans;
-//	vector<int> tree;
-//	//입력들
-//	cin >> tree_case;
-//	cin >> need;
-//	for (int i = 0; i < tree_case; i++) {
-//		cin >> a;
-//		if (longest < a)	longest = a;
-//		tree.push_back(a);
-//	}
-//	cut = longest;
-//
-//	
-//	while (shortest<=longest) {
-//
-//		sum = 0;
-//		for (int i = 0; i < tree_case; i++) { // sum 값
-//			if (tree[i] > cut)	sum += tree[i] - cut;
-//		}
-//
-//		if (sum<need) { // 자른 나무량이 적을 경우
-//			longest = cut-1; // 이전값 저장
-//			cut = (cut + shortest) / 2;
-//		}
-//		else if (sum >= need) {//자른 나무양이 많을 경우
-//			ans = cut;
-//			shortest = cut+1;
-//			cut = (longest + cut) / 2;
-//		}	
-//	}
-//	cout << ans;
-//
-//	return 0;
-//}
-
-
-#include <iostream>
-#include <vector>
-
-using namespace std;
 
 int main() {
-    // 빠른 입출력 (필수)
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+	//시간초과용
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
 
-    int tree_case;
-    long long need;
-    cin >> tree_case >> need;
+	int tree_case; // 입력받을 나무의 갯수
+	int need;// 필요한 나무 길이
+	int a,longest=0,shortest=0,cut=0;// a = 대충 입력받을 값, longest = 가장 긴 나무길이, sum=자를 나무길이의 총 합
+	long long sum = 0,ans;
+	vector<int> tree;
+	//입력들
+	cin >> tree_case;
+	cin >> need;
+	for (int i = 0; i < tree_case; i++) {
+		cin >> a;
+		if (longest < a)	longest = a;
+		tree.push_back(a);
+	}
+	cut = longest;
 
-    // 💡 핵심 최적화: 미리 필요한 만큼 벡터의 크기를 할당해 둠 (push_back 제거)
-    vector<int> tree(tree_case);
-    long long longest = 0;
+	
+	while (shortest<=longest) {
 
-    for (int i = 0; i < tree_case; i++) {
-        cin >> tree[i]; // push_back 대신 인덱스로 바로 접근
-        if (longest < tree[i]) longest = tree[i];
-    }
+		sum = 0;
+		for (int i = 0; i < tree_case; i++) { // sum 값
+			if (tree[i] > cut)	sum += tree[i] - cut;
+		}
 
-    long long shortest = 0;
-    long long ans = 0;
+		if (sum<need) { // 자른 나무량이 적을 경우
+			longest = cut-1; // 이전값 저장
+			cut = (longest + shortest) / 2;
+		}
+		else if (sum >= need) {//자른 나무양이 많을 경우
+			ans = cut;
+			shortest = cut+1;
+			cut = (longest + longest) / 2;
+		}	
+	}
+	cout << ans;
 
-    // 이분 탐색 뼈대 (무한루프 원천 차단)
-    while (shortest <= longest) {
-        long long cut = (shortest + longest) / 2;
-        long long sum = 0;
-
-        for (int i = 0; i < tree_case; i++) {
-            if (tree[i] > cut) {
-                sum += tree[i] - cut;
-            }
-        }
-
-        if (sum < need) {
-            longest = cut - 1;
-        }
-        else {
-            ans = cut;
-            shortest = cut + 1;
-        }
-    }
-
-    cout << ans << "\n";
-    return 0;
+	return 0;
 }
+
+//// ai가 푼거임 뭐가다른거냐 시발
+//#include <iostream>
+//#include <vector>
+//
+//using namespace std;
+//
+//int main() {
+//    // 빠른 입출력 (필수)
+//    ios_base::sync_with_stdio(false);
+//    cin.tie(NULL);
+//
+//    int tree_case;
+//    long long need;
+//    cin >> tree_case >> need;
+//
+//    // 💡 핵심 최적화: 미리 필요한 만큼 벡터의 크기를 할당해 둠 (push_back 제거)
+//    vector<int> tree(tree_case);
+//    long long longest = 0;
+//
+//    for (int i = 0; i < tree_case; i++) {
+//        cin >> tree[i]; // push_back 대신 인덱스로 바로 접근
+//        if (longest < tree[i]) longest = tree[i];
+//    }
+//
+//    long long shortest = 0;
+//    long long ans = 0;
+//
+//    // 이분 탐색 뼈대 (무한루프 원천 차단)
+//    while (shortest <= longest) {
+//        long long cut = (shortest + longest) / 2;
+//        long long sum = 0;
+//
+//        for (int i = 0; i < tree_case; i++) {
+//            if (tree[i] > cut) {
+//                sum += tree[i] - cut;
+//            }
+//        }
+//
+//        if (sum < need) {
+//            longest = cut - 1;
+//        }
+//        else {
+//            ans = cut;
+//            shortest = cut + 1;
+//        }
+//    }
+//
+//    cout << ans << "\n";
+//    return 0;
+//}
